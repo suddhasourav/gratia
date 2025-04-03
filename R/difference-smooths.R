@@ -34,7 +34,7 @@
 #' @param newdata_guaranteed passed to predict.gam. From the documentation: "Set to TRUE 
 #' to turn off all checking of newdata except for sanity of factor levels: this can speed
 #' things up for large prediction tasks, but newdata must be complete, with no NA values 
-#' for predictors required in the model.
+#' for predictors required in the model."
 #' @param group_means logical; should the group means be included in the
 #'   difference?
 #' @param partial_match logical; should `smooth` match partially against
