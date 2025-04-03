@@ -25,6 +25,16 @@
 #' @param ci_level numeric between 0 and 1; the coverage of credible interval.
 #' @param data data frame of locations at which to evaluate the difference
 #'   between smooths.
+#' @param exclude passed to predict.gam. From the documentation: "any terms named
+#' in this array will be set to zero. If NULL then no terms are excluded. Note 
+#' that this is the term names as it appears in the model summary. You can avoid
+#' providing the covariates for excluded smooth terms by setting newdata.guaranteed=TRUE,
+#' which will avoid all checks on newdata (covariates for parametric terms can not 
+#' be skipped)."
+#' @param newdata_guaranteed passed to predict.gam. From the documentation: "Set to TRUE 
+#' to turn off all checking of newdata except for sanity of factor levels: this can speed
+#' things up for large prediction tasks, but newdata must be complete, with no NA values 
+#' for predictors required in the model.
 #' @param group_means logical; should the group means be included in the
 #'   difference?
 #' @param partial_match logical; should `smooth` match partially against
@@ -83,6 +93,8 @@
   n = 100,
   ci_level = 0.95,
   data = NULL,
+  exclude = NULL,
+  newdata_guaranteed = FALSE,
   group_means = FALSE,
   partial_match = TRUE,
   unconditional = FALSE,
@@ -172,7 +184,8 @@
   }
   names(pairs) <- paste0("f", 1:2)
 
-  Xp <- predict(model, newdata = data, type = "lpmatrix")
+  Xp <- predict(model, newdata = data, exclude=exclude,
+                newdata.guaranteed=newdata_guaranteed, type = "lpmatrix")
   V <- get_vcov(model,
     unconditional = unconditional,
     frequentist = frequentist
